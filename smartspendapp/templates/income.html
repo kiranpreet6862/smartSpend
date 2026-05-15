@@ -1,0 +1,241 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="{% static 'css/income.css' %}">
+</head>
+<body>
+    <div class="body_container">
+        <div class="left_container">
+            <div class="sidebar">
+                <div class="header">
+                    <div class="logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+            <hr>
+                <div class="navigation">
+                    <p>NAVIGATION</p>
+                    <ul>
+                        <li>
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <p><a href="{% url 'dashboard' %}">Dashboard</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">account_balance_wallet</span>
+                            <p><a href="{% url 'expenses' %}">Expenses</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">currency_rupee</span>
+                            <p><a href="{% url 'income' %}">Income</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">savings</span>
+                            <p><a href="{% url 'budget' %}">Budget</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">insights</span>
+                            <p><a href="{% url 'insights' %}">Insights</a></p>
+                        </li>
+                    </ul>
+                </div><br><br><br><br><br><br>
+                <div class="settings">
+                    <hr>    
+                    <ul>
+                        <li class="dark-mode-item" onclick="darkmode()">
+                            <span class="material-symbols-outlined">dark_mode</span>
+                            <p class="mode-text">Dark Mode</p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            <p>Log out</p>
+                        </li>
+                        <li class="profile">
+                            <div class="profile_logo">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </div>
+                            <div class="profile_text">
+                                <p>Simranjeet</p>
+                                <span>simran@gmail.com</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>       
+        </div>
+        <div class="right_container">
+            <div class="top-header">
+                <div class="left-header">
+                    <div class="left-logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+                <div class="menu">
+                    <span class="material-symbols-outlined" onclick="togglemenu()">menu</span>
+                </div>
+            </div>
+            <main class="main">
+                <p>Income</p>
+                <span>Manage your earnings and savings goals</span>
+                <div class="main_content">
+                    <div class="card" id="card1">
+                        <p>Total Income</p>
+                        <span>₹{{total_income | intcomma }}</span>
+                        <p>{{ sources }} sources</p>
+                    </div>
+                    <div class="card" id="card2">
+                        <p >Projected Savings</p>
+                        <span id="projectedSavings">₹19,400</span>
+                        <p id="savingsPercentage">20% of income</p>
+                    </div>
+                    <div class="card" id="card3">
+                        <p>Available to Spend</p>
+                        <span id="availableSpend">₹77,600</span>
+                        <p>after savings</p>
+                    </div>
+                    <form method="POST" class="card" id="card4">
+                        {% csrf_token %}
+                        <p>Add Income</p>
+                        <span>Record new earnings</span>
+
+                        <label>Amount (₹)</label>
+                        <input type="number" name="amount" placeholder=" 0.00">
+
+                        <label>Source</label>
+                        <input type="text" name="source" placeholder=" e.g. Salary, Freelance">
+
+                        <label>Date</label>
+                        <input type="date" name="date">  
+
+                        <button class="btn" type="submit">+Add Income</button>
+                    </form>
+                    <div class="card" id="card5">
+                        
+                        <p>Income Sources</p>
+                        <span>All recorded earnings</span>
+                        {% for income in incomes %}
+                        <div class="salary_details">
+                            
+                            <div class="sd1">
+                                <div class="icon">
+                                    <span class="material-symbols-outlined">redeem</span>
+                                </div>
+                                <div class="text">
+                                    <p>{{ income.source }}</p>
+                                    <span>{{ income.date }}</span>
+                                </div>
+                            </div>
+                            <div class="sd2">
+                                <div class="amount">
+                                    <p>+₹{{ income.amount | intcomma }}</p>
+                                    <span>{{ income.percentage|floatformat:"0" }}% of total</span>
+                                </div>
+                                <span class="material-symbols-outlined"><a href="{% url 'delete_income' income.id %}">delete</a></span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <hr>
+                        
+                        <div class="total">
+                            <p>TOTAL</p>
+                            <span>₹{{ total_income | intcomma }}</span>
+                        </div>
+                    </div>
+                    <div class="card" id="card6">
+                        <p>Savings Rate</p>
+                        <span>Adjust your target savings percentage</span>
+                        <div class="rate">
+                            <p>Rate</p>
+                            <span id="value">{{ savings_rate|floatformat:"0" }}%</span>
+                        </div>
+                        <form method="POST" id="savings_form">
+                            {% csrf_token %}
+                            <input type="hidden" name="savings_rate" id="savings_rate_input" value="{{ savings_rate }}">
+                            <input type="range" id="range" min="0" max="100" value="{{ savings_rate }}" style="width:100%">
+                        </form>
+                        <div class="percent">
+                            <p>0%</p>
+                            <span>100%</span>
+                        </div>
+                        <div class="saving_container">
+                            <div class="saving_target">
+                                <p>Monthly savings target</p>
+                                <span id="savingAmount">₹19,400</span>
+                                <div id="weeklySaving">= ₹1,617/week approx.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        const totalIncome =Number("{{ total_income }}");
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const slider =document.getElementById("range");
+            const valueText =document.querySelector(".rate span");
+            const savingAmount =document.getElementById("savingAmount");
+            const weeklySaving =document.getElementById("weeklySaving");
+            const projectedSavings =document.getElementById("projectedSavings");
+            const availableSpend =document.getElementById("availableSpend");
+            const savingsPercentage =document.getElementById("savingsPercentage");
+    
+            function updateSlider() {
+
+                let value = slider.value;
+
+                valueText.innerText =value + "%";
+                slider.style.background = 
+                `linear-gradient(
+                    to right,
+                    #059669 ${value}%,
+                    hsl(0,0%,90%) ${value}%
+                )`;
+
+                let savings =(totalIncome * value) / 100;
+                savingAmount.innerText ="₹" + savings.toLocaleString();
+                projectedSavings.innerText ="₹" + savings.toLocaleString();
+
+                let remaining = totalIncome - savings;
+                availableSpend.innerText ="₹" + remaining.toLocaleString();
+                savingsPercentage.innerText =value + "% of income";
+
+                let weekly =Math.round(savings / 4);
+                weeklySaving.innerText ="= ₹" + weekly.toLocaleString() +"/week approx.";
+
+                localStorage.setItem("savingsRate", value);
+                localStorage.setItem("projectedSavings", savings);
+
+                document.getElementById("savings_rate_input").value = value;
+
+            }
+                
+
+            slider.addEventListener( "input",updateSlider);
+
+            slider.addEventListener("change", function() {
+                document.getElementById("savings_form").submit();
+            });
+
+            updateSlider();
+
+        });
+    </script>
+    <script src="{% static 'javascript/income.js' %}"></script>
+</body>
+</html>

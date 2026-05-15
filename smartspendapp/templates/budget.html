@@ -1,0 +1,230 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="{% static 'css/budget.css' %}">
+</head>
+<body>
+    <div class="body_container">
+        <div class="left_container">
+            <div class="sidebar">
+                <div class="header">
+                    <div class="logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+            <hr>
+                <div class="navigation">
+                    <p>NAVIGATION</p>
+                    <ul>
+                        <li>
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <p><a href="{% url 'dashboard' %}">Dashboard</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">account_balance_wallet</span>
+                            <p><a href="{% url 'expenses' %}">Expenses</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">currency_rupee</span>
+                            <p><a href="{% url 'income' %}">Income</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">savings</span>
+                            <p><a href="{% url 'budget' %}">Budget</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">insights</span>
+                            <p><a href="{% url 'insights' %}">Insights</a></p>
+                        </li>
+                    </ul>
+                </div><br><br><br><br><br><br>
+                <div class="settings">
+                    <hr>    
+                    <ul>
+                        <li class="dark-mode-item" onclick="darkmode()">
+                            <span class="material-symbols-outlined">dark_mode</span>
+                            <p class="mode-text">Dark Mode</p>
+                        </li>
+                        <li class="logout-item">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            <p>Log out</p>
+                        </li>
+                        <li class="profile">
+                            <div class="profile_logo">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </div>
+                            <div class="profile_text">
+                                <p>Simranjeet</p>
+                                <span>simran@gmail.com</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>       
+        </div>
+        <div class="right_container">
+            <div class="top-header">
+                <div class="left-header">
+                    <div class="left-logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+                <div class="menu">
+                    <span class="material-symbols-outlined" onclick="togglemenu()">menu</span>
+                </div>
+
+            </div>
+            <main class="main">
+                <p>Budget Tracker</p>
+                <span>Keep your spending in check</span>
+                <div class="main_content">
+                    <div class="card" id="card1">
+                        <p>Monthly Budget <span class="material-symbols-outlined">₹</span></p>
+                        <h4>₹{{ budget.amount | floatformat:0 | intcomma }}</h4>
+                        <p>your set limit</p>
+                    </div>
+                    <div class="card" id="card2">
+                        <p>Amount Spent<span class="material-symbols-outlined">trending_up</span></p>
+                        <h4>₹{{ total_spent | floatformat:0 | intcomma }}</h4>
+                        <p>{{ progress_percentage | floatformat:0 }}% used</p>
+                    </div>
+                    <div class="card" id="card3">
+                        <p>Remaining<span class="material-symbols-outlined">done_all</span></p>
+                        <h4>₹{{ remaining_budget | floatformat:0     | intcomma }}</h4>
+                        <p>left this month</p>
+                    </div>
+                    <div class="card" id="card4">
+                        <p>Daily Limit<span class="material-symbols-outlined">calendar_month</span></p>
+                        <h4>₹{{ daily_limit | floatformat:0 | intcomma }}</h4>
+                        <p>for {{ remaining_days }} days left</p>
+                    </div>
+                    <div class="card" id="card5">
+                        <div class="card5_content">
+                            <div>
+                                <p>Monthly Overview</p>
+                                <span>How you're tracking against your budget</span>    
+                            </div>
+                            <div>
+                                <span class="material-symbols-outlined">check_circle</span>
+                                <p>On Track</p>
+                            </div>
+                        </div>
+                        <p>₹{{ total_spent | floatformat:0 | intcomma }} spent<span>₹{{ budget.amount | floatformat:0 | intcomma }} limit</span></p>
+                        <div class="progress_bar"  >
+                            <div class="filled_bar  green" style="width:{{ progress_percentage | floatformat:0 }}%;"></div>
+                        </div>
+                        <div class="spent_prog_rem">
+                            <div class="spent">
+                                <p>Spent</p>
+                                <span>₹{{total_spent | floatformat:0 | intcomma}}</span>
+                            </div>
+                            <div class="progress">
+                                <p>Progress</p>
+                                <span>{{ progress_percentage | floatformat:0 }}%</span>
+                            </div>
+                            <div class="remaining">
+                                <p>Remaining</p>
+                                <span>₹{{remaining_budget | floatformat:0 | intcomma}}</span>
+                            </div>
+                        </div>                  
+                        <hr>
+                        <p class="daily_insights">DAILY INSIGHTS</p>
+                        <div class="insights">
+                            <div class="box" id="avg">
+                                <p>Avg. Daily Spend</p>
+                                <span>₹{{ avg_daily_spent | floatformat:0 | intcomma }}</span>
+                                <p>past {{ today }} days</p>
+                            </div>
+                            <div class="box" id="daily">
+                                <p>Daily Limit Left</p>
+                                <span>₹{{ daily_limit | floatformat:0 | intcomma }}</span>
+                                <p>for {{ remaining_days }} days</p>
+                            </div>
+                        </div>               
+                    </div>
+                    <div class="card" id="card6">
+                        <p>Budget Limit<span   id="edit_btn" class="material-symbols-outlined">edit</span></p>
+                        <div class="budget" id="budget_display">
+                            <p>₹{{ budget.amount | floatformat:0 | intcomma }}</p>
+                            <span>per month</span>
+                            <button id="edit_btn2">Edit Budget</button>
+                        </div>
+                        <form method="POST" class="edit_form" id="budget_form">
+                            {% csrf_token %}
+                            <label>Monthly Limit (₹)</label>
+                            <input type="number" name="new_budget" value="{{ budget.amount }}" >
+                            <button type="submit">Save</button>
+                            <button type="button" class="cancel_btn">Cancel</button>
+                        </form>
+                    </div>
+                    <div class="card" id="card7">
+                        <p>By Category</p>
+                        <span>Spending breakdown this month</span>
+                        {% for item in category_data %}
+                        <div class="expenses">
+                            <div class="item">
+                                <span class="dot {% if item.category == 'Food' %}
+                                                teal
+                                                {% elif item.category == 'Transport' %}
+                                                blue
+                                                {% elif item.category == 'Bills' %}
+                                                red
+                                                {% elif item.category == 'Entertainment' %}
+                                                purple
+                                                {% elif item.category == 'Shopping' %}
+                                                orange
+                                                {% elif item.category == 'Rent' %}
+                                                pink
+                                                {% elif item.category == 'Health' %}
+                                                green
+                                                {% else %}
+                                                maroon
+                                                {% endif %}"></span>
+                                <p> {{ item.category }}</p>
+                                <div class="bar">
+                                    <div class="fill {% if item.category == 'Food' %}
+                                                teal
+                                                {% elif item.category == 'Transport' %}
+                                                blue
+                                                {% elif item.category == 'Bills' %}
+                                                red
+                                                {% elif item.category == 'Entertainment' %}
+                                                purple
+                                                {% elif item.category == 'Shopping' %}
+                                                orange
+                                                {% elif item.category == 'Rent' %}
+                                                pink
+                                                {% elif item.category == 'Health' %}
+                                                green
+                                                {% else %}
+                                                maroon
+                                                {% endif %}" style="width:{{ item.percentage | floatformat:0 }}%">
+                                    </div>
+                                </div>
+                                <span class="amount">₹{{ item.total | floatformat:0 | intcomma }}</span>
+                                <span class="percentage">{{ item.percentage | floatformat:0 }}%</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="{% static 'javascript/budget.js' %}"></script>
+</body>
+</html>

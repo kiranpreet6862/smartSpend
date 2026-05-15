@@ -1,0 +1,359 @@
+body{
+    height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    
+    margin: 0;
+    padding: 0;
+}
+.left-container{
+    background: linear-gradient(135deg, #0f9d6a, #0a7f5a);
+    color: white;
+    padding: 45px 0px 0px 25px;
+    
+    
+}
+.content{
+    animation-name: left-container-anim;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+    animation-play-state: running;
+}
+@keyframes left-container-anim {
+    from {
+        opacity: 0;
+        transform: translateY(70px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.left-container h1{
+    font-size: 50px;
+    margin-left: 20px;
+}
+.left-container h1 span{
+    color: hsl(158, 51%, 64%);
+   
+}
+.left-container p{
+    color: hsl(158, 51%, 90%);
+    font-weight: 600;
+    font-size: 32px;
+    margin-left: 20px;
+}
+.features{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 30px;
+}
+.features li{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 18px;
+    color: hsl(158, 51%, 90%);
+}
+.features li span{
+    font-size: 15px;
+    background-color: #37a87f;
+    border-radius: 3px;
+    
+}
+.logo>span{
+    font-size: 30px;
+    background-color: #37a87f;
+    border-radius: 5px;
+    width: 35px;
+    text-align: center;
+    
+    
+}
+.logo{
+    display: flex;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 30px;
+    margin-left: 20px;
+}
+.stats{
+    display: flex;   
+    margin-top: 20%;
+    list-style: none;
+    justify-content: space-around;  
+    
+}
+.stats li{
+    gap: 8px;
+    font-size: 40px;
+    font-weight: 600;
+    
+}
+.stats span{
+    font-size: 22px;
+    color: hsl(158, 51%, 90%);
+}
+
+.right-container{
+    background-color: white;
+    animation-name: right-container-anim;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+    animation-play-state: running;
+}
+@keyframes right-container-anim {
+    from {
+        opacity: 0;
+        transform: translateX(70px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+.right-container h1{
+    margin: 0;
+    font-size: 40px;
+    padding-top: 10px;
+}
+.right-container p{
+    font-size: 25px !important;
+}
+form{
+    margin-top: 20px;
+}
+form label {
+    display: block;
+    margin-top: 20px;
+    font-size: 20px;    
+}
+#password-label{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+#password-label span{
+    cursor: pointer;
+
+}
+#password-label span:hover{
+    color: #0a7f5a;
+}
+
+form input {
+    width: 100%;
+    height: 14%;
+    margin-top: 5px;
+    box-shadow: 0 0 5px hsl(0, 0%, 80%);
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+.right-container{
+    display: flex;
+    flex-direction: column;
+    margin: 18%;
+    gap: 5px;
+}
+.right-container h2{
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+.right-container p{
+    color: hsl(0, 0%, 50%);
+    font-weight: 600;
+    margin-top: 10px;
+    margin: 0;
+}
+#buttons {
+    background-color:hsl(0, 0%, 90%) ;
+    display: flex;
+    /* gap: 10px; */
+    border-radius: 4px;
+}
+#buttons >.sign-in-btn{
+    background-color:whitesmoke;
+    color: black;
+    border: none;
+    box-shadow: 1px 1px 5px hsl(0, 0%, 80%);
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 12px 10px ;
+}
+#buttons >.sign-up-btn{
+    color: hsl(0, 0%, 50%);
+    border: none;
+    padding: 12px 10px ;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: hsl(0, 0%, 90%);
+}
+
+#buttons button{
+    width: 50%;
+    cursor: pointer;
+    font-weight: 600;
+}
+.sign-in-submit{
+    margin-top: 20px;
+    width: 100%;
+    background-color: #0f9d6a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 15px 10px;
+    margin-bottom: 10px;
+}   
+.signup-link{
+    /* margin-top: 10%; */
+    /* font-size: 14px; */
+    color: hsl(0, 0%, 50%);
+    text-align: center;
+}
+.signup-link a{
+    
+    color: #0f9d6a;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.sign-up-form {
+    display: none;
+}
+/* default state */
+#buttons button {
+    background-color: hsl(0, 0%, 90%);
+    color: hsl(0, 0%, 50%);
+}
+
+/* active button */
+#buttons button.active-btn {
+    background-color: white;
+    color: black;
+    box-shadow: 1px 1px 5px hsl(0, 0%, 80%);
+}
+#buttons button {
+    transition: all 0.3s ease;
+}
+
+@media (min-width:320px){
+    body{
+        grid-template-columns: 1fr;
+    }
+    .left-container{
+        display: none;
+    }
+    .right-container h1{
+        font-size: 25px;
+        margin-top: 40px;
+    }
+    .right-container > p{
+        font-size: 18px !important;
+    }
+    .sign-in-form > p, .sign-up-form > p{
+        font-size: 15px !important;
+    }
+    .sign-in-btn,.sign-up-btn{
+        padding: 4px 10px;
+    }
+    form label{
+        font-size: 18px;
+    }
+    form input{
+        height: 40px;
+        font-size: 15px;
+    }
+
+}
+@media (min-width: 768px) { 
+    body{
+        grid-template-columns:1fr 1fr;
+    }
+    .left-container{
+        display: block;
+    }
+    .logo{
+        font-size: 25px;
+    }
+    .logo span{
+        font-size: 25px;
+        height: 25px;
+    }
+    .content h1{
+        font-size: 30px;
+    }
+    .content p{
+        font-size: 20px;
+    }
+    .features li{
+        font-size: 15px;
+    }
+    .stats{
+        margin-top: 40%;
+    }
+    .stats li{
+        font-size: 22px;
+    }
+    .stats span{
+        font-size: 15px;
+    }
+}
+@media (min-width: 1024px) {
+    .logo{
+        font-size: 40px;
+    }
+    .logo span{
+        font-size: 35px;
+        height: 35px;
+    }
+    .content h1{
+        font-size: 40px;
+    }
+    .content p{
+        font-size: 25px;
+    }
+    .features li{
+        font-size: 20px;
+    }
+    .stats{
+        margin-top: 20%;
+    }
+    .stats li{
+        font-size: 28px;
+    }
+    .stats span{
+        font-size: 18px;
+    }
+    .right-container h1{
+        font-size: 35px;
+        margin-top: 40px;
+    }
+    .right-container > p{
+        font-size: 20px !important;
+    }
+    .sign-in-form > p, .sign-up-form > p{
+        font-size: 20px !important;
+    }
+    .sign-in-btn,.sign-up-btn{
+        padding: 4px 10px;
+    }
+    form label{
+        font-size: 20px;
+    }
+    form input{
+        height: 40px;
+        font-size: 15px;
+    }
+}

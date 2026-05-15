@@ -1,0 +1,261 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+    <div class="body_container">
+        <div class="left_container">
+            <div class="sidebar">
+                <div class="header">
+                    <div class="logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="navigation">
+                    <p>NAVIGATION</p>
+                    <ul>
+                        <li>
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <p><a href="{% url 'dashboard' %}">Dashboard</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">account_balance_wallet</span>
+                            <p><a href="{% url 'expenses' %}">Expenses</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">currency_rupee</span>
+                            <p><a href="{% url 'income' %}">Income</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">savings</span>
+                            <p><a href="{% url 'budget' %}">Budget</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">insights</span>
+                            <p><a href="{% url 'insights' %}">Insights</a></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="settings">
+                    <hr>    
+                    <ul>
+                        <li class="dark-mode-item" onclick="darkmode()">
+                            <span class="material-symbols-outlined">dark_mode</span>
+                            <p class="mode-text">Dark Mode</p>
+                        </li>
+                        <li class="logout-item" onclick="document.getElementById('logout-form').submit()">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            <p class="log_out">Log out</p>
+                        </li>
+                        <li class="profile">
+                            <div class="profile_logo">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </div>
+                            <div class="profile_text">
+                                <p>Simranjeet</p>
+                                <span>simran@gmail.com</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>       
+        </div>
+        <div class="right_container"> 
+            <div class="top-header">
+                <div class="left-header">
+                    <div class="left-logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+                <div class="menu">
+                    <span class="material-symbols-outlined" onclick="togglemenu()">menu</span>
+                </div>
+
+            </div>     
+            <main class="main">
+                <h3>Dashboard</h3>
+                <p>April 2026 — financial overview</p>
+                <div class="cards">
+                    <div class="card" id="card1">
+                        <p>TOTAL INCOME <span class="material-symbols-outlined">north_east</span></p>
+                        <h4>₹ {{total_income | intcomma}}</h4>
+                        <p>+12% from last month</p>
+                    </div>
+                    <div class="card" id="card2">
+                        <p>TOTAL EXPENSES <span class="material-symbols-outlined">south_east</span></p>
+                        <h4>₹ {{total_spent | intcomma}}</h4>
+                        <p>{{ progress_percentage | floatformat:0 }}% of budget used</p>
+                    </div>
+                    <div class="card" id="card3">
+                        <p>TOTAL SAVINGS <span class="material-symbols-outlined">north_east</span></p>
+                        <h4 id="totalSavings">₹ {{total_savings | intcomma}}</h4>
+                        <p id="savingsPercent">{{ savingsPercent }} of income saved</p>
+                    </div>
+                    <div class="card" id="card4">
+                        <p>REMAINING BUDGET <span class="material-symbols-outlined">north_east</span></p>
+                        <h4>₹ {{remaining_budget | intcomma}}</h4>
+                        <p>From ₹{{budget_amount}} total</p>
+                    </div>
+                    <div class="card" id="card5">
+                        <div id="chart1">
+                            <p>  Weekly Spending Trend   <span> Cumulative spend tracked week by week</span><p>
+                        
+                        </div> 
+
+                    </div>
+                    <div class="card" id="card6">
+                        <p>Financial Health</p>
+                        <span>Score based on savings & spending habits</span>
+                        <div class="card6_container">
+                            <div class="left">
+                                <div class="score">   
+                                    <div id="chart2"></div>
+                                    <p class="score-text">✔ {{ health_status }}</p>
+                                </div>
+                            </div>
+                            <div class="bar">
+                                <p>SCORE FACTORS</p>
+
+                                <div class="progress_name">
+                                    <p>Savings Rate <span>{{ savings_score | floatformat:0 }}%</span></p>
+                            
+                                </div>
+                                <div class="progress">
+                                    <div class="fill green" style="width:{{ savings_score | floatformat:0 }}%"></div>
+                                </div>
+
+                                <div class="progress_name">
+                                    <p>Budget Usage<span>{{ budget_score | floatformat:0 }}%</span> </p>
+                            
+                                </div>
+                                <div class="progress">
+                                    <div class="fill blue" style="width:{{ budget_score | floatformat:0 }}%"></div>
+                                </div>
+
+                                <div class="progress_name">
+                                    <p>Consistency<span>{{ consistency_score | floatformat:0 }}%</span> </p>
+                            
+                                </div>
+                                <div class="progress">
+                                    <div class="fill purple" style="width:{{ consistency_score | floatformat:0 }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="card" id="card7">
+                        <div id="donut_title">
+                            <p>Expense by Category<span>Visual breakdown of this month's spending</span></p>
+                        
+                        </div>
+                        <div class="card7_container">
+                            <div class="left">
+                                <div id="chart3">
+                                    <div id="donut_container">
+                                        <div id="donutChart">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                {% for item in category_data %}
+                                <div class="item">
+                                    <span class="dot {% if item.category == 'Food' %}
+                                                teal
+                                                {% elif item.category == 'Transport' %}
+                                                blue
+                                                {% elif item.category == 'Bills' %}
+                                                red
+                                                {% elif item.category == 'Entertainment' %}
+                                                purple
+                                                {% elif item.category == 'Shopping' %}
+                                                orange
+                                                {% elif item.category == 'Rent' %}
+                                                pink
+                                                {% elif item.category == 'Health' %}
+                                                green
+                                                {% else %}
+                                                maroon
+                                                {% endif %}"></span>
+                                    <p> {{ item.category }} </p>
+                                    <div class="bar">
+                                        <div class="fill {% if item.category == 'Food' %}
+                                                teal
+                                                {% elif item.category == 'Transport' %}
+                                                blue
+                                                {% elif item.category == 'Bills' %}
+                                                red
+                                                {% elif item.category == 'Entertainment' %}
+                                                purple
+                                                {% elif item.category == 'Shopping' %}
+                                                orange
+                                                {% elif item.category == 'Rent' %}
+                                                pink
+                                                {% elif item.category == 'Health' %}
+                                                green
+                                                {% else %}
+                                                maroon
+                                                {% endif %}"  style="width:{{ item.percentage }}%"></div>
+                                    </div>
+                                    <span class="amount">₹{{ item.total | intcomma }}</span>
+                                    <span class="percentage">{{ item.percentage }}%</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script>
+        const weeks = {{ weeks|safe }};
+        const weeklyTotals = {{ weekly_totals|safe }};
+        const healthScore = {{ health_score | floatformat:0 }};
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const savingsRate = localStorage.getItem("savingsRate") || 20;
+        const projectedSavings = localStorage.getItem("projectedSavings");
+    
+        const totalIncome = Number("{{ total_income }}");
+        const savings = projectedSavings 
+            ? Number(projectedSavings) 
+            : (totalIncome * savingsRate) / 100;
+
+        
+        document.getElementById("totalSavings").innerText = 
+            "₹" + savings.toLocaleString();
+        document.getElementById("savingsPercent").innerText = 
+            savingsRate + "% of income saved";
+        });
+
+        const categoryData = [
+            {% for item in category_data %}
+            {
+                total: {{ item.total }},
+                category: "{{ item.category }}",
+                color: "{{ item.color }}",
+            },
+            {% endfor %}
+        ];
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="{% static 'javascript/dashboard.js' %}"></script>
+</body>
+</html> 

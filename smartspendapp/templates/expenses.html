@@ -1,0 +1,210 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="{% static 'css/expenses.css' %}">
+</head>
+<body>
+    <div class="body_container">
+        <div class="left_container">
+            <div class="sidebar">
+                <div class="header">
+                    <div class="logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+            <hr>
+                <div class="navigation">
+                    <p>NAVIGATION</p>
+                    <ul>
+                        <li>
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <p><a href="{% url 'dashboard' %}">Dashboard</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">account_balance_wallet</span>
+                            <p><a href="{% url 'expenses' %}">Expenses</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">currency_rupee</span>
+                            <p><a href="{% url 'income' %}">Income</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">savings</span>
+                            <p><a href="{% url 'budget' %}">Budget</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">insights</span>
+                            <p><a href="{% url 'insights' %}">Insights</a></p>
+                        </li>
+                    </ul>
+                </div><br><br><br><br><br><br>
+                <div class="settings">
+                    <hr>    
+                    <ul>
+                        <li class="dark-mode-item" onclick="darkmode()">
+                            <span class="material-symbols-outlined">dark_mode</span>
+                            <p class="mode-text">Dark Mode</p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            <p>Log out</p>
+                        </li>
+                        <li class="profile">
+                            <div class="profile_logo">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </div>
+                            <div class="profile_text">
+                                <p>Simranjeet</p>
+                                <span>simran@gmail.com</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>       
+        </div>
+        <div class="right_container">
+            <div class="top-header">
+                <div class="left-header">
+                    <div class="left-logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+                <div class="menu">
+                    <span class="material-symbols-outlined" onclick="togglemenu()">menu</span>
+                </div>
+            </div> 
+            <main class="main">
+                <p>Expenses</p>
+                <span>Track and manage your spending</span>
+                <div class="main_content">
+                    <div class="left">
+                        
+                        <form class="form" method="POST">
+                            {% csrf_token %}
+                            <p>Add Expenses</p>
+                            <span>Record a new transaction</span>
+                            <label>Amount(₹)</label>
+                            <input type="Number" placeholder="0.00" name="amount">
+
+                            <label>Category</label>
+                            <select name="category">
+                                <option value="">Select category</option>
+                                <option value="Food">Food</option>
+                                <option value="Rent">Rent</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Bills">Bills</option>
+                                <option value="Health">Health</option>
+                                <option value="Other">Other</option>
+                            </select>
+
+                            <label>Date</label>
+                            <input type="date" name="date">
+
+                            <label>Description</label>
+                            <input type="text" placeholder="What was this for?" name="description">
+                            <button class="btn" type="submit">+ Add Expense</button>    
+                        </form>
+                    </div>
+                    <div class="right">
+                        <div class="card" id="card1">
+                            <p>Total Spent</p>
+                            <span>₹{{total_spent | intcomma }}</span>
+                        </div>
+                        <div class="card" id="card2">
+                            <p>Transactions</p>
+                            <span>{{total_transactions}}</span>
+                        </div>
+                        <div class="card" id="card3">
+                            <p>Showing</p>
+                            <span>{{selected_category}}</span>
+                            </span>
+                        </div>
+                        <div class="card" id="card4">
+                            <form method="GET" class="search-box">
+                                <span class="material-symbols-outlined">search</span>
+                                <input type="text" name="search" placeholder="Search expenses...">
+                            </form>
+
+                            <a class="{% if selected_category == 'All' %}active {% endif %}" href="{% url 'expenses' %}">All</a>
+                            <a class="{% if selected_category == 'Food' %}active{% endif %}" href="?category=Food">Food</a>
+                            <a class="{% if selected_category == 'Transport' %}active{% endif %}" href="?category=Transport">Transport</a>
+                            <a class="{% if selected_category == 'Entertainment' %}active{% endif %}" href="?category=Entertainment">Entertainment</a>
+                            <a class="{% if selected_category == 'Shopping' %}active{% endif %}" href="?category=Shopping">Shopping</a>
+                            <a class="{% if selected_category == 'Bills' %}active{% endif %}" href="?category=Bills">Bills</a>
+                            <a class="{% if selected_category == 'Health' %}active{% endif %}" href="?category=Health">Health</a>
+                            <a class="{% if selected_category == 'Other' %}active{% endif %}" href="?category=Other">Other</a>
+                        </div>
+                        <div class="card" id="card5">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for expense in expenses %}
+                                    <tr>
+                                        <td>{{expense.date}}</td>
+                                        <td>{{expense.description}}</td>
+                                        <td><span class="badge {% if expense.category == 'Food' %}
+                                                                bg_teal teal
+                                                                {% elif expense.category == 'Transport' %}
+                                                                bg_blue blue
+                                                                {% elif expense.category == 'Entertainment' %} 
+                                                                bg_purple purple
+                                                                {% elif expense.category == 'Shopping' %} 
+                                                                bg_orange orange
+                                                                {% elif expense.category == 'Bills' %} 
+                                                                bg_red red
+                                                                {% elif expense.category == 'Health' %} 
+                                                                bg_green green
+                                                                {% elif expense.category == 'rent' %}
+                                                                bg_pink pink
+                                                                {% else %} 
+                                                                bg_maroon maroon
+                                                                {% endif %}">
+                                                                <span class="dot">● 
+                                                                </span>
+                                                    {{ expense.category }}
+                                            </span>
+                                            
+                                        </td>
+                                        <td class="amount">₹{{expense.amount | intcomma }}</td>
+                                        <td class="actions">
+                                            <span class="material-symbols-outlined"><a href="{% url 'delete_expense' expense.id %}">delete</a></span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="{% static 'javascript/expenses.js' %}"></script>
+    
+</body>
+</html>

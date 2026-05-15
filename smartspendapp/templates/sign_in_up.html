@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In/Out</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="{% static 'css/sign_in.css' %}">
+
+</head>
+<body data-form="{{ form_type|default:'signin' }}">
+    <div class="left-container">
+        <div class="content">
+            <div class="logo">
+                <span class="material-symbols-outlined">trending_up</span>
+                SmartSpend
+            </div><br><br>
+            <h1>Take control of <br><span>your finances</span></h1>
+            <p>Your personal financial cockpit - <br>private, precise, and honest<br> about your money.</p>
+            <ul class="features">
+                <li><span class="material-symbols-outlined">equalizer</span>Visual spending breakdowns & trend analysis</li>
+                <li><span class="material-symbols-outlined">bolt</span>AI-driven behavioral insights & alerts</li>
+                <li><span class="material-symbols-outlined">verified_user</span>Budget tracking with smart daily limits</li>
+            </ul>
+            <ul class="stats">
+                <li>₹4.2L<br><span>Avg. tracked monthly</span></li>
+                <li>94%<br><span>Budget accuracy</span></li>
+                <li>32%<br><span>Savings improvement</span></li>
+            </ul>
+        </div> 
+    </div> 
+    <div class="right-container">
+        <h1>Welcome Back!</h1>
+        <p>Sign in to access your financial dashboard</p>
+        <form class="sign-in-form" method="post" action="{% url 'auth' %}" >
+            {% csrf_token %}
+            <span id="buttons">
+                <button type="button" class="sign-in-btn">Sign in</button>
+                <button type="button" class="sign-up-btn active-btn">Sign up</button>
+            </span>
+            <label>Username</label>
+            <input type="text" name="username" placeholder="  rahul" required>
+            <label id="password-label">Password<span> Forgot password?</span> </label>
+            <input type="password" name="password" placeholder="  ••••••••" required >
+            <button class="sign-in-submit" type="submit">Sign In</button>
+            <p class="signup-link">New to SmartSpend? <a href="#" class="sign-up-btn"> Sign up free</a></p>
+            {% if error %}
+            <p style="color:red;">{{ error }}</p>
+            {% endif %}
+        </form>
+        <form class="sign-up-form" method="post"action="{% url 'auth' %}">
+            {% csrf_token %}
+            <span id="buttons">
+                <button type="button" class="sign-in-btn active-btn">Sign in</button>
+                <button type="button" class="sign-up-btn">Sign up</button>
+            </span>
+            <label>Username</label>
+            <input type="text" name="username" placeholder=" Rahul Sharma" required>
+            <label>Email address</label>
+            <input type="email" name="email" placeholder=" rahul@example.com" required>
+            <label>Password</label>
+            <input type="password" name="password" placeholder=" ••••••••" required>
+            <button class="sign-in-submit" type="submit">Create Account</button>
+            <p class="signup-link">Already have an account? <a href="#" class="sign-in-btn"> Sign in</a></p><br>
+            {% if error %}
+            <p style="color:red;">{{ error }}</p>
+            {% endif %}
+        </form>
+
+          
+    </div> 
+<script src="{% static 'javascript/sign_in_up.js' %}"></script>
+</body>
+</html>

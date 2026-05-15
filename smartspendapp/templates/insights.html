@@ -1,0 +1,262 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="{% static 'css/insights.css' %}">
+</head>
+<body>
+    <div class="body_container">
+        <div class="left_container">
+            <div class="sidebar">
+                <div class="header">
+                    <div class="logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+            <hr>
+                <div class="navigation">
+                    <p>NAVIGATION</p>
+                    <ul>
+                        <li>
+                            <span class="material-symbols-outlined">dashboard</span>
+                            <p><a href="{% url 'dashboard' %}">Dashboard</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">account_balance_wallet</span>
+                            <p><a href="{% url 'expenses' %}">Expenses</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">currency_rupee</span>
+                            <p><a href="{% url 'income' %}">Income</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">savings</span>
+                            <p><a href="{% url 'budget' %}">Budget</a></p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">insights</span>
+                            <p><a href="{% url 'insights' %}">Insights</a></p>
+                        </li>
+                    </ul>
+                </div><br><br><br><br><br><br>
+                <div class="settings">
+                    <hr>    
+                    <ul>
+                        <li class="dark-mode-item" onclick="darkmode()">
+                            <span class="material-symbols-outlined">dark_mode</span>
+                            <p class="mode-text">Dark Mode</p>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            <p>Log out</p>
+                        </li>
+                        <li class="profile">
+                            <div class="profile_logo">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </div>
+                            <div class="profile_text">
+                                <p>Simranjeet</p>
+                                <span>simran@gmail.com</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>       
+        </div>
+        <div class="right_container">
+            <div class="top-header">
+                <div class="left-header">
+                    <div class="left-logo">
+                        <span class="material-symbols-outlined">trending_up</span>
+                    </div>
+                    <div class="title">
+                        <h5>SmartSpend</h5>
+                        <p>Finance Dashboard</p>
+                    </div>
+                </div>
+                <div class="menu">
+                    <span class="material-symbols-outlined" onclick="togglemenu()">menu</span>
+                </div>
+            </div>
+            <main class="main">
+                <p>Behavioral Insights</P>
+                <span>Data-driven analysis of your spending habits</span>
+                <div class="main_content">
+                    <div class="card" id="card1">
+                        <div class="first_row1">
+                            <span class="material-symbols-outlined">trending_down</span>
+                            <p>High Impact</p>
+                        </div>
+                        <span>Weekend Overspending</span>
+                        <p>You spend ₹{{ avg_weekend|floatformat:0 | intcomma }} on weekends vs ₹{{ avg_weekday|floatformat:0 | intcomma }} on weekdays (avg) — a {{ weekend_jump|floatformat:0 }}% jump.</p>
+                        <p><i>Consider setting a weekend-specific budget cap.</i></p>
+                    </div>
+                    <div class="card" id="card2">
+                        <div class="first_row2">
+                            <span class="material-symbols-outlined">trending_up</span>
+                            <p>Watch Out</p>
+                        </div>
+                        <span>Rising Entertainment</span>
+                        <p>Entertainment spend is up {{ entertainment_jump|floatformat:0 }}% vs last month — ₹{{ this_month_entertainment|floatformat:0 | intcomma }} this month vs ₹{{ last_month_entertainment|floatformat:0 | intcomma }} prior.</p>
+                        <p><i>Review subscriptions and discretionary outings.</i></p>
+                    </div>
+                    <div class="card" id="card3">
+                        <div class="first_row3">
+                            <span class="material-symbols-outlined">search</span>
+                            <p>Optimize</p>
+                        </div>
+                        <span> Frequent Small Expenses</span>
+                        <p>{{ small_count }} transactions under ₹500 this month totaling ₹{{ small_total|floatformat:0 | intcomma }} — they add up fast.</p>
+                        <p><i>Small purchases are often impulse-driven. Try a 24h rule.</i></p>
+                    </div>
+                    <div class="card" id="card4">
+                        <p>Daily Spending Pattern</p>
+                        <span>Average spend per day of the week — weekends highlighted</span>
+                        <div id="dailyChart"></div>
+                    </div>
+                </div>
+                <div class="main_content2">
+                    <div class="card" id="card5">
+                        <p><span class="material-symbols-outlined">electric_bolt</span>Hidden Expense Detector</p>
+                        <p>The "Latte Factor" analysis</p>
+                        <div class="amounts">
+                            <div class="monthly_drain">
+                                <p>Monthly drain</p>
+                                <span>₹{{ small_total|floatformat:0 | intcomma }}</span>
+                                <p>coffee & snacks</p>
+                            </div>
+                            <div class="annual_impact">
+                                <p>Annual impact</p>
+                                <span>₹{{ annual_impact|floatformat:0 | intcomma }}</span>
+                                <p>a vacation fund</p>
+                            </div>
+                        </div>
+                        <div class="suggestion">
+                            <p>If you saved this instead...</p>
+                            <p>At 7% annual returns, ₹{{ annual_impact|floatformat:0 }}/yr grows to ₹{{ future_value|floatformat:0 | intcomma }} in 10 years.</p>
+                        </div>
+                    </div>
+                    <div class="card" id="card6">
+                        <div class="time">
+                            <p><span class="material-symbols-outlined">schedule</span>Time Cost of Money</p>
+                            <p>See purchases in hours worked instead of rupees</p>
+                        </div>
+
+                        <label>Item Cost (₹)</label>
+                        <input type="number" id="itemCost" placeholder=" Enter any amount...">
+                        <div class="work">
+                            <div class="work_hours">
+                                <p>This expense equals</p>
+                                <span id="hoursWorked">0</span>
+                                <p>hours of work</p>
+                                <p>assuming ₹200/hour net pay</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" id="card7">
+                        <p><span class="material-symbols-outlined">lightbulb</span>Expense Prediction</p>
+                        <span>Based on your average daily spend of ₹{{ avg_daily_spent|floatformat:0 | intcomma }}/day</span>
+                        <p>Month-end estimate</p>
+                        <div class="prediction">
+                            <p>~₹{{ predicted_spend|floatformat:0 | intcomma }}</p>
+                            <p><span class="material-symbols-outlined">trending_up</span>{{ status }}</p>
+                        </div>
+                        <div class="prediction2">
+                            <p>Predicted</p>
+                            <span >₹{{ predicted_spend|floatformat:0 | intcomma }} / ₹{{ budget_amount|floatformat:0 | intcomma }}</span>
+                        </div>
+                        <div class="progress_bar">
+                            <div class="progress fill" style="width: {{ prediction_percentage|floatformat:0 }}%;"></div>
+                        </div>
+                        <p>{{ prediction_percentage|floatformat:0 }}% of your ₹{{ budget_amount|floatformat:0 | intcomma }} budget — well under control.</p>
+                        <div class="estimates">
+                            <div class="estimate1">
+                                <p>This month</p>
+                                <span>₹{{ predicted_spend|floatformat:0 | intcomma }}</span>
+                            </div>
+                            <div class="estimate2">
+                                <p>Last month est.</p>
+                                <span>
+                                    {% if last_month_total %}
+                                        ₹{{ last_month_total|floatformat:0 | intcomma }}
+                                    {% else %}
+                                        ₹0
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" id="card8">
+                        <div class="goal_header">
+                            <p><span class="material-symbols-outlined">currency_rupee_circle</span>Savings Goal</p>
+                            <span class="material-symbols-outlined" id="edit_goal">edit</span>
+                        </div>
+                        <p>Emergency Fund — 3-month safety net</p>
+                        <div class="goal">
+                            <p>Saved so far</p>
+                            <p>Goal</p>
+                        </div>
+                        <div class="amounts2">
+                            <p>₹19,400</p>
+                            <p>₹50,000</p>
+                        </div>
+                        <div class="progress_heading">
+                            <p>39% complete</p>
+                            <span>₹30,600 to go</span>
+                        </div>
+                        <div class="progress_bar2">
+                            <div class="progress2 fill" style="width: 39%;"></div>
+                        </div>
+                        <div class="rate_savings">
+                            <div class="rate">
+                                <p>At current rate</p>
+                                <span>~7 weeks</span>
+                                <p>to reach goal</p>
+                            </div>  
+                            <div class="savings">
+                                <p>Monthly savings</p>
+                                <span>₹19,400</span>
+                                <p>at 20% rate</p>
+                            </div>
+                        </div>                      
+                    </div>
+
+                    <div class="card" id="card8_edit">
+                        <div class="goal_header">
+                            <p><span class="material-symbols-outlined">currency_rupee_circle</span>Savings Goal</p>
+                            <span class="material-symbols-outlined" id="edit_goal2">edit</span>
+                        </div>
+                        <p>Emergency Fund — 3-month safety net</p>
+                        <form method="POST" class="edit_form" id="saving_form">
+                            {% csrf_token %}
+                            <label>Saving Goal (₹)</label>
+                            <input type="number" name="goal_amount" id="goal_amount" placeholder=" Enter your savings goal..." value="50000">
+                            <button type="submit">Save</button>
+                            <button type="button" class="cancel_btn">Cancel</button>
+                        </form>
+                                           
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        const dayNames = {{ day_names|safe }};
+        const dailyPattern = {{ daily_pattern|safe }};
+
+    </script>
+    <script src="{% static 'javascript/insights.js' %}"></script>
+    
+    
+</body>
+</html>
