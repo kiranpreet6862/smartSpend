@@ -57,15 +57,15 @@
                         </li>
                         <li>
                             <span class="material-symbols-outlined">arrow_back</span>
-                            <p>Log out</p>
+                            <p><a href="{% url 'logout' %}">Log out </a></p>
                         </li>
                         <li class="profile">
                             <div class="profile_logo">
                                 <span class="material-symbols-outlined">account_circle</span>
                             </div>
                             <div class="profile_text">
-                                <p>Simranjeet</p>
-                                <span>simran@gmail.com</span>
+                                <p>{{request.user.username}}</p>
+                                <span>{{request.user.email}}</span>
                             </div>
                         </li>
                     </ul>
@@ -97,7 +97,17 @@
                             <p>High Impact</p>
                         </div>
                         <span>Weekend Overspending</span>
-                        <p>You spend ₹{{ avg_weekend|floatformat:0 | intcomma }} on weekends vs ₹{{ avg_weekday|floatformat:0 | intcomma }} on weekdays (avg) — a {{ weekend_jump|floatformat:0 }}% jump.</p>
+                        <p>You spend ₹{{ avg_weekend|floatformat:0 | intcomma }}
+                            on weekends vs ₹{{ avg_weekday|floatformat:0 | intcomma }}
+                            on weekdays (avg)-
+                            {% if avg_weekend > avg_weekday %}
+                                {{ weekend_jump|floatformat:0 }}% higher spending on weekends.
+                            {% elif avg_weekend < avg_weekday %}
+                                {{ weekend_jump|floatformat:0|cut:"-" }}% lower spending on weekends.
+                            {% else %}
+                                spending remains consistent throughout the week.
+                            {% endif %}
+                            </p>
                         <p><i>Consider setting a weekend-specific budget cap.</i></p>
                     </div>
                     <div class="card" id="card2">
@@ -140,9 +150,11 @@
                                 <p>a vacation fund</p>
                             </div>
                         </div>
-                        <div class="suggestion">
-                            <p>If you saved this instead...</p>
-                            <p>At 7% annual returns, ₹{{ annual_impact|floatformat:0 }}/yr grows to ₹{{ future_value|floatformat:0 | intcomma }} in 10 years.</p>
+                        <div class="suggestion_container">
+                            <div class="suggestion">
+                                <p>If you saved this instead...</p>
+                                <p>At 7% annual returns, ₹{{ annual_impact|floatformat:0 }}/yr grows to ₹{{ future_value|floatformat:0 | intcomma }} in 10 years.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="card" id="card6">
@@ -206,26 +218,26 @@
                             <p>Goal</p>
                         </div>
                         <div class="amounts2">
-                            <p>₹19,400</p>
-                            <p>₹50,000</p>
+                            <p>₹{{savings |  floatformat:0 | intcomma}}</p>
+                            <p>₹{{goal_amount | floatformat:0 | intcomma}}</p>
                         </div>
                         <div class="progress_heading">
-                            <p>39% complete</p>
-                            <span>₹30,600 to go</span>
+                            <p>{{goal_percentage | floatformat:0 }}% complete</p>
+                            <span>₹{{remaining_goal | floatformat:0 | intcomma}} to go</span>
                         </div>
                         <div class="progress_bar2">
-                            <div class="progress2 fill" style="width: 39%;"></div>
+                            <div class="progress2 fill" style="width: {{ goal_percentage }}%;"></div>
                         </div>
                         <div class="rate_savings">
                             <div class="rate">
                                 <p>At current rate</p>
-                                <span>~7 weeks</span>
+                                <span>~{{weeks_left}} weeks</span>
                                 <p>to reach goal</p>
                             </div>  
                             <div class="savings">
                                 <p>Monthly savings</p>
-                                <span>₹19,400</span>
-                                <p>at 20% rate</p>
+                                <span>₹{{savings |  floatformat:0 | intcomma}}</span>
+                                <p>at {{saving_rate | floatformat:0 }}% rate</p>
                             </div>
                         </div>                      
                     </div>
@@ -233,13 +245,12 @@
                     <div class="card" id="card8_edit">
                         <div class="goal_header">
                             <p><span class="material-symbols-outlined">currency_rupee_circle</span>Savings Goal</p>
-                            <span class="material-symbols-outlined" id="edit_goal2">edit</span>
                         </div>
                         <p>Emergency Fund — 3-month safety net</p>
                         <form method="POST" class="edit_form" id="saving_form">
                             {% csrf_token %}
                             <label>Saving Goal (₹)</label>
-                            <input type="number" name="goal_amount" id="goal_amount" placeholder=" Enter your savings goal..." value="50000">
+                            <input type="number" name="goal_amount" id="goal_amount" placeholder=" Enter your savings goal..." value="{{ goal_amount }}">
                             <button type="submit">Save</button>
                             <button type="button" class="cancel_btn">Cancel</button>
                         </form>

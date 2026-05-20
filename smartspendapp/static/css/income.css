@@ -1,4 +1,6 @@
-
+*{
+    box-sizing: border-box;
+}
 body {
     margin: 0;
     overflow: hidden;
@@ -186,9 +188,6 @@ li p a{
     margin-top: 60%;
 }
 
-
-/* ===== Sidebar Toggle ===== */
-
 .body_container.active {
     grid-template-columns: 0px 1fr;
 }
@@ -211,9 +210,6 @@ li p a{
 .body_container.active .top-header{
     justify-content: space-between;
 }
-/* .body_container.active .menu{
-
-} */
 .sidebar {
     transition: all 0.3s ease;
 }
@@ -259,8 +255,11 @@ li p a{
     border-radius: 10px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
 }
+#card1{grid-area: card1;}
+#card2{grid-area: card2;}
+#card3{grid-area: card3;}
 #card1,#card2,#card3{
-    grid-area: card1;
+    
     height: 100px;
     display: flex;
     flex-direction: column;
@@ -425,7 +424,7 @@ li p a{
 
 #card6{
     grid-area: card6;
-    height: 230px;
+    height: 260px;
     padding-left: 8px;
     padding-right: 8px;
     padding-top: 10px ;
@@ -511,16 +510,16 @@ li p a{
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 .saving_target{
     display: flex;
     flex-direction: column;
     text-align: center;
-    height: 80px;
+    /* height: 80px; */
     width: 180px;
     background-color: hsl(240, 63%, 83%);
     padding: 8px;
-    /* margin-left: 20px; */
     border-radius: 8px;
     
     border:1px solid hsl(240, 100%, 60%);
@@ -546,15 +545,10 @@ li p a{
     cursor: pointer;
 }
 
-
-/* ===== PREMIUM DARK MODE ===== */
-
 .dark{
     background: #020817;
     color: #F8FAFC;
 }
-
-/* Layout */
 
 .dark .main{
     background: #020817;
@@ -570,15 +564,11 @@ li p a{
     border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-/* Cards */
-
 .dark .card{
     background: #081028;
     border: 1px solid rgba(255,255,255,0.05);
     box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
-
-/* Text */
 
 .dark h3,
 .dark h4,
@@ -589,8 +579,6 @@ li p a{
 .dark a{
     color: #E2E8F0 !important;
 }
-
-/* Light Text */
 
 .dark .main > span,
 .dark #card1 > p,
@@ -607,8 +595,6 @@ li p a{
     color: #64748B !important;
 }
 
-/* Sidebar */
-
 .dark li:hover{
     background: rgba(255,255,255,0.04);
     border-radius: 10px;
@@ -617,8 +603,6 @@ li p a{
 .dark li .material-symbols-outlined{
     color: #94A3B8;
 }
-
-/* Active Menu */
 
 .dark .active-nav{
     background: rgba(16,185,129,0.15);
@@ -629,8 +613,6 @@ li p a{
 .dark .active-nav span{
     color: #34D399 !important;
 }
-
-/* Form Inputs */
 
 .dark #card4 input{
     background: #0F172A;
@@ -647,34 +629,24 @@ li p a{
     border: 1px solid #34D399;
 }
 
-/* Buttons */
-
 .dark .btn{
     background: linear-gradient(90deg,#10B981,#059669);
     color: white;
 }
-
-/* Salary Cards */
 
 .dark .salary_details{
     background: #0F172A;
     border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* Income Amount */
-
 .dark .amount > p{
     color: #00F5A0 !important;
 }
-
-/* Icons */
 
 .dark .icon .material-symbols-outlined{
     background: rgba(16,185,129,0.15);
     color: #34D399;
 }
-
-/* Range Slider */
 
 .dark #range{
     background: rgba(255,255,255,0.08);
@@ -683,8 +655,6 @@ li p a{
 .dark #range::-webkit-slider-thumb{
     background: #00F5A0;
 }
-
-/* Savings Target */
 
 .dark .saving_target{
     background: rgba(59,130,246,0.12);
@@ -695,7 +665,6 @@ li p a{
     color: #60A5FA !important;
 }
 
-/* Menu Icon */
 
 .dark .top-header .material-symbols-outlined{
     background: #111C35;
@@ -703,7 +672,6 @@ li p a{
     border-radius: 8px;
 }
 
-/* Profile */
 
 .dark .profile{
     background: rgba(255,255,255,0.03);
@@ -716,7 +684,6 @@ li p a{
     color: #34D399;
 }
 
-/* Smooth */
 
 body,
 .main,
@@ -726,7 +693,6 @@ input,
 button{
     transition: all 0.3s ease;
 }
-/* TOP HEADER LOGO FIX */
 
 .dark .left-logo .material-symbols-outlined{
     background: linear-gradient(135deg,#34D399,#10B981);
@@ -738,12 +704,64 @@ button{
     box-shadow: 0 8px 20px rgba(16,185,129,0.35);
 }
 
-/* Header Text */
-
 .dark .left-header .title h5{
     color: #F8FAFC !important;
 }
 
 .dark .left-header .title p{
     color: #94A3B8 !important;
+}
+
+@media screen and (min-width: 375px){
+
+   html,body{
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .body_container{
+        display: block;
+    }
+
+    .left_container{
+        width: 0;
+    }
+
+    .right_container{
+        width: 100%;
+    }
+
+    .sidebar{
+        max-width: 220px;
+        z-index: 2000;
+    }
+    .settings{
+        margin-top: 70%;
+    }
+
+    .main{
+        width: 100%;
+        padding: 20px 18px;
+        overflow-x: hidden;
+    }
+    .top-header{
+        width: 100%;
+        height: 60px;
+        padding: 10px 15px;
+    }
+}
+@media (min-width:768px){
+    .body_container{
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        grid-template-rows: 30px 1fr ;
+        grid-template-areas: 
+        "left header"
+        "left right";
+    }
+    .top-header{
+        height: 30px;   
+        padding: 0px 15px 28px 15px; 
+    }
+
 }

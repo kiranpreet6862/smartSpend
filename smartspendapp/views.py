@@ -13,7 +13,7 @@ def auth_view(request):
     if request.method == "POST":
 
         #  SIGN UP
-        if "name" in request.POST:
+        if request.POST.get("form_type") == "signup":
             username = request.POST.get("username")
             email = request.POST.get("email")
             password = request.POST.get("password")
@@ -72,6 +72,36 @@ def dashboard(request):
     remaining_budget = budget.amount - total_spent
     budget_amount = budget.amount
     
+    today = datetime.today()
+
+    current_month_income = incomes.filter(
+        date__year=today.year,
+        date__month=today.month
+    ).aggregate(Sum('amount'))['amount__sum'] or 0
+
+
+    last_month = today.month - 1
+    last_year = today.year
+
+    if last_month == 0:
+        last_month = 12
+        last_year -= 1
+
+
+    last_month_income = incomes.filter(
+        date__year=last_year,
+        date__month=last_month
+    ).aggregate(Sum('amount'))['amount__sum'] or 0
+
+
+    if last_month_income > 0:
+        income_change = round((
+            (current_month_income - last_month_income)
+            / last_month_income
+        ) * 100)
+    else:
+        income_change = "No Prevoius Income"
+    
     # Chart1
     
     today = datetime.today()
@@ -101,17 +131,27 @@ def dashboard(request):
         weeks.append(f"Week {i}")
         weekly_totals.append(float(total))
         
-        
     # Chart2
     budget, created = Budget.objects.get_or_create(user=request.user)
     active_weeks = len([w for w in weekly_totals if w > 0])
     savings_rate = budget.savings_rate 
     savings = total_income * (savings_rate / 100)
-    savings_score = min((savings / total_income * 100) / savings_rate * 100, 100
-                        ) if total_income > 0 and savings_rate > 0 else 0
-    budget_score = progress_percentage
+    savings_score = round((savings / total_income) * 100) if total_income > 0 else 0
+    budget_score = max(100 - progress_percentage, 0)
     
-    consistency_score = (active_weeks / 4) * 100
+    consistency_score = 100 - (
+        (max(weekly_totals) - min(weekly_totals))
+        / max(weekly_totals) * 100
+    )
+    
+    if active_weeks >= 3:
+        consistency_score = 100
+    elif active_weeks == 2:
+        consistency_score = 70
+    elif active_weeks == 1:
+        consistency_score = 40
+    else:
+        consistency_score = 0
     health_score = round((savings_score * 0.20) + (budget_score * 0.40) + (consistency_score * 0.40))
     
     if health_score >= 80:
@@ -166,7 +206,8 @@ def dashboard(request):
         "health_status": health_status,
         "savings_score": savings_score,
         "budget_score": budget_score,
-        "consistency_score": consistency_score
+        "consistency_score": consistency_score,
+        'income_change' : income_change
         
     }
     return render(request, 'dashboard.html', context)
@@ -219,6 +260,7 @@ def expenses(request):
     }
     return render(request, 'expenses.html', context)
 
+@login_required
 def delete_expense(request,id):
     expense = Expense.objects.get(
         id=id,
@@ -227,6 +269,7 @@ def delete_expense(request,id):
     expense.delete()
     return redirect('expenses')
 
+@login_required
 def income(request):
     
     budget, _ = Budget.objects.get_or_create(user=request.user)
@@ -271,6 +314,7 @@ def income(request):
     
     return render(request, 'income.html', context)
 
+@login_required
 def delete_income(request,id):
     income = Income.objects.get(
         id=id,
@@ -279,6 +323,7 @@ def delete_income(request,id):
     income.delete()
     return redirect('income')
 
+@login_required
 def budget(request):
     
     budget, created = Budget.objects.get_or_create(user=request.user)
@@ -354,6 +399,8 @@ def insights(request):
         weekend_jump = ((avg_weekend - avg_weekday) / avg_weekday) * 100
     else:
         weekend_jump = 0
+        
+    weekend_jump = round(abs(weekend_jump))
         
      # Rising Entertainment
      
@@ -445,8 +492,38 @@ def insights(request):
         date__month=last_month
     ).aggregate(Sum('amount'))['amount__sum'] or 0
     
+    # Saving Goal
     
+    budget, created = Budget.objects.get_or_create(user=request.user)
+    if request.method == "POST":
 
+        goal_amount = float(request.POST.get("goal_amount"))
+
+        if goal_amount:
+
+            budget.saving_goal = goal_amount
+
+            budget.save()
+        
+            return redirect ("insights")
+            
+    incomes = Income.objects.filter(user=request.user)
+    total_income = incomes.aggregate(Sum('amount'))['amount__sum'] or 0
+    savings = total_income * (budget.savings_rate / 100)
+    
+    goal_amount = budget.saving_goal
+    remaining_goal =  max(goal_amount - savings, 0)
+    goal_percentage = min((savings / goal_amount) * 100, 100) if goal_amount > 0 else 0
+    
+    saving_rate = budget.savings_rate
+    
+    weekly_savings = savings/4 if savings > 0 else 0
+    
+    weeks_left = (
+        remaining_goal/weekly_savings
+        if weekly_savings>0 else 0
+    )
+    
     return render(request, 'insights.html', {
         'avg_weekend': avg_weekend,
         'avg_weekday': avg_weekday,
@@ -466,8 +543,12 @@ def insights(request):
         'prediction_percentage': prediction_percentage,
         'status': status,
         'budget_amount': budget.amount,
-        'last_month_total': last_month_total
-        
-        
-        
+        'last_month_total': last_month_total,
+        "goal_amount" : goal_amount,
+        "remaining_goal" : remaining_goal,
+        'goal_percentage' : goal_percentage,
+        "savings" : savings,
+        'saving_rate' : saving_rate,
+        'weeks_left' : round(weeks_left),
+
     })

@@ -1,4 +1,6 @@
-
+*{
+    box-sizing: border-box;
+}
 body {
     margin: 0;
     overflow: hidden;
@@ -181,9 +183,6 @@ li p a{
     margin-top: 60%;
 }
 
-
-/* ===== Sidebar Toggle ===== */
-
 .body_container.active {
     grid-template-columns: 0px 1fr;
 }
@@ -206,9 +205,7 @@ li p a{
 .body_container.active .top-header{
     justify-content: space-between;
 }
-/* .body_container.active .menu{
 
-} */
 .sidebar {
     transition: all 0.3s ease;
 }
@@ -221,8 +218,6 @@ li p a{
 .top-header {
     width: 100%;
 }
-
-/* // */
 
 .main>p{
     font-size: 25px;
@@ -827,4 +822,87 @@ button{
 
 .dark .left-header .title p{
     color: #94A3B8 !important;
+}
+
+
+@media screen and (min-width: 375px){
+
+   html,body{
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .body_container{
+        display: block;
+    }
+
+    .left_container{
+        width: 0;
+    }
+
+    .right_container{
+        width: 100%;
+    }
+
+    .sidebar{
+        max-width: 220px;
+        z-index: 2000;
+    }
+    .settings{
+        margin-top: 70%;
+    }
+
+    .main{
+        width: 100%;
+        padding: 20px 18px;
+        overflow-x: hidden;
+    }
+    .top-header{
+        width: 100%;
+        height: 60px;
+        padding: 10px 15px;
+    }
+    .main_content{
+        margin-top: 20px;
+        height: 100vh;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr ;
+        grid-template-rows: 100px 100px 350px 180px 1fr;
+        grid-template-areas: 
+        "card1 card2"
+        "card3 card4"
+        "card5 card5"
+        "card6 card6"
+        "card7 card7";
+        gap: 8px;
+    }
+}
+@media (min-width:768px){
+    .body_container{
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        grid-template-rows: 30px 1fr ;
+        grid-template-areas: 
+        "left header"
+        "left right";
+    }
+    .top-header{
+        height: 30px;   
+        padding: 0px 15px 28px 15px; 
+    }
+    
+
+}
+
+@media (min-width:1024px){
+    .main_content{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 100px  180px 1fr;
+        grid-template-areas: 
+        "card1 card2 card3 card4"
+        "card5 card5 card6 card6"
+        "card5 card5 card7 card7";
+        gap: 8px;
+}
 }

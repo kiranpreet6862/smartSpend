@@ -57,15 +57,15 @@
                         </li>
                         <li class="logout-item">
                             <span class="material-symbols-outlined">arrow_back</span>
-                            <p>Log out</p>
+                            <p><a href="{% url 'logout' %}">Log out </a></p>
                         </li>
                         <li class="profile">
                             <div class="profile_logo">
                                 <span class="material-symbols-outlined">account_circle</span>
                             </div>
                             <div class="profile_text">
-                                <p>Simranjeet</p>
-                                <span>simran@gmail.com</span>
+                                <p>{{request.user.username}}</p>
+                                <span>{{request.user.email}}</span>
                             </div>
                         </li>
                     </ul>

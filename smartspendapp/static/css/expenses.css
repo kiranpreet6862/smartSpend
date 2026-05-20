@@ -1,3 +1,6 @@
+*{
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -203,7 +206,6 @@ li p a{
     color: hsl(0, 0%, 46%);
 }
 
-/* ===== Sidebar Toggle ===== */
 
 .body_container.active {
     grid-template-columns: 0px 1fr;
@@ -227,9 +229,7 @@ li p a{
 .body_container.active .top-header{
     justify-content: space-between;
 }
-/* .body_container.active .menu{
 
-} */
 .sidebar {
     transition: all 0.3s ease;
 }
@@ -244,25 +244,21 @@ li p a{
     
 }
 
-/* /// */
 .main_content{
     display: flex;
     flex-direction: row;  
     display: grid;
     grid-template-columns: 350px 1fr;   
     grid-template-areas: 
-    "left right";
+    "form right";
     gap: 15px;
 }
-.left{
-    grid-area: left;
-}
+
 .right{
     grid-area: right;
 }
 .form{
-    height: 350px;
-    width: 320px;
+    grid-area: form;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -379,10 +375,10 @@ li p a{
 }
 #card4{
     grid-area: card4;
-    height: 50px;
+    height: auto;
     background-color: white;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 6px;
     /* padding: 5px 10px; */
     border-radius: 12px;
@@ -446,6 +442,7 @@ li p a{
     border-radius: 12px;
     padding: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-sizing: border-box;
 }
 
 table{
@@ -503,8 +500,6 @@ tbody tr{
 .badge{
     padding:8px 14px;
     border-radius:20px;
-    /* display:flex;
-    align-items:center; */
     gap:6px;
     width:fit-content;
 }
@@ -525,15 +520,10 @@ tbody tr{
     cursor: pointer;
 }
 
-
-/* Dark Mode Styles */
-
 .dark{
     background: #020817;
     color: #F8FAFC;
 }
-
-/* Main Areas */
 
 .dark .main{
     background: #020817;
@@ -549,8 +539,6 @@ tbody tr{
     border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-/* Cards */
-
 .dark .card,
 .dark .form,
 .dark #card1,
@@ -562,8 +550,6 @@ tbody tr{
     border: 1px solid rgba(255,255,255,0.05);
     box-shadow: 0 10px 30px rgba(0,0,0,0.35);
 }
-
-/* Typography */
 
 .dark h3,
 .dark h4,
@@ -577,8 +563,6 @@ tbody tr{
     color: #E2E8F0 !important;
 }
 
-/* Sub Text */
-
 .dark .main > span,
 .dark .form > span,
 .dark .navigation > p,
@@ -589,7 +573,6 @@ tbody tr{
     color: #64748B !important;
 }
 
-/* Sidebar Menu */
 
 .dark li:hover{
     background: rgba(255,255,255,0.04);
@@ -599,8 +582,6 @@ tbody tr{
 .dark li .material-symbols-outlined{
     color: #94A3B8;
 }
-
-/* Active Navigation */
 
 .dark .active-nav{
     background: rgba(16,185,129,0.15);
@@ -612,7 +593,6 @@ tbody tr{
     color: #34D399 !important;
 }
 
-/* Inputs */
 
 .dark .form input,
 .dark .form select{
@@ -631,8 +611,6 @@ tbody tr{
     border: 1px solid #34D399;
 }
 
-/* Search Box */
-
 .dark .search-box{
     background: #0F172A;
     border: 1px solid rgba(255,255,255,0.06);
@@ -646,7 +624,6 @@ tbody tr{
     color: #64748B;
 }
 
-/* Filter Buttons */
 
 .dark #card4 a{
     background: #111C35;
@@ -663,13 +640,11 @@ tbody tr{
     color: white;
 }
 
-/* Table */
 
 .dark tbody tr{
     border-top: 1px solid rgba(255,255,255,0.06);
 }
 
-/* Tags */
 
 .dark .green{
     background: rgba(16,185,129,0.15);
@@ -701,28 +676,32 @@ tbody tr{
     color: #F87171;
 }
 
-/* Action Icons */
+.dark .maroon{
+    background: rgba(239,68,68,0.15);
+    color: hsl(0, 100%, 35%);
+}
+.dark .teal{
+    background: rgba(239,68,68,0.15);
+    color: teal;
+}
+
 
 .dark .actions span{
     color: #94A3B8;
 }
 
-/* Button */
 
 .dark .btn{
     background: linear-gradient(90deg,#34D399,#10B981);
     color: white;
 }
 
-/* Menu Icon */
 
 .dark .top-header .material-symbols-outlined{
     background: #111C35;
     color: #E2E8F0;
     border-radius: 8px;
 }
-
-/* Profile */
 
 .dark .profile{
     background: rgba(255,255,255,0.03);
@@ -734,8 +713,6 @@ tbody tr{
     color: #34D399;
 }
 
-/* Smooth */
-
 body,
 .main,
 .sidebar,
@@ -746,7 +723,6 @@ input,
 select{
     transition: all 0.3s ease;
 }
-/* TOP HEADER LOGO FIX */
 
 .dark .left-logo .material-symbols-outlined{
     background: linear-gradient(135deg,#34D399,#10B981);
@@ -758,8 +734,6 @@ select{
     box-shadow: 0 8px 20px rgba(16,185,129,0.35);
 }
 
-/* Header Text */
-
 .dark .left-header .title h5{
     color: #F8FAFC !important;
 }
@@ -767,3 +741,201 @@ select{
 .dark .left-header .title p{
     color: #94A3B8 !important;
 }
+
+@media screen and (min-width: 375px){
+
+   html,body{
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .body_container{
+        display: block;
+    }
+
+    .left_container{
+        width: 0;
+    }
+
+    .right_container{
+        width: 100%;
+    }
+
+    .sidebar{
+        max-width: 220px;
+        z-index: 2000;
+    }
+    .settings{
+        margin-top: 70%;
+    }
+
+    .main{
+        width: 100%;
+        padding: 20px 18px;
+        overflow-x: hidden;
+    }
+    .top-header{
+        width: 100%;
+        height: 60px;
+        padding: 10px 15px;
+    }
+    .main_content{
+        display: flex;
+        flex-direction: row;  
+        display: grid;
+        grid-template-columns:  1fr;   
+        grid-template-areas: 
+        "form"
+        "right ";
+        gap: 15px;
+    } 
+    .right{  
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 90px 120px 1fr;
+        grid-template-areas: 
+        "card1 card2 card3"
+        "card4 card4 card4"
+        "card5 card5 card5";
+        
+    }
+    
+    #card4{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+
+    }
+}
+@media (min-width:768px){
+    .form>p{
+        font-size: 22px;
+        font-weight: bold;
+    }
+    .form>span{
+        font-size: 18px;
+    }
+    
+    .form label{
+        font-size: 20px;
+    }
+    .form input{
+        font-size: 18px;
+        height: 40px;
+    }
+    .form select{
+        font-size: 18px;
+        height: 40px;
+        width: 100%;  
+    }
+    .form button{
+        padding: 15px;
+        font-size: 20px;
+    }
+    .right{  
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 120px 120px 1fr;
+        grid-template-areas: 
+        "card1 card2 card3"
+        "card4 card4 card4"
+        "card5 card5 card5";
+        
+    }
+    #card1,#card2,#card3{
+        height: 120px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+    #card1>p,#card2>p,#card3>p{
+        font-size: 24px;
+    }
+    #card1>span,#card2>span,#card3>span{
+        font-size: 25px;
+        font-weight: bold;  
+    }
+    
+    .search-box{
+        padding: 8px 5px;
+    }
+
+    .search-box input{
+        font-size: 18px;
+    }
+
+    .search-box span{
+        font-size: 18px;
+    }
+
+    #card4 a{
+        font-size: 18px;
+    }
+    #card5 th{
+        font-size: 20px;
+    }
+    #card5 td{
+        font-size: 18px;
+    }
+    .actions span{
+        font-size: 18px;
+    }
+
+}
+@media (min-width:1024px){
+    .main_content{
+        grid-template-columns: 400px 1fr;   
+        grid-template-areas: 
+        "form right ";
+        gap: 15px;
+    } 
+    .form{
+        height: 450px;
+    }
+    .form .btn{
+        padding: 10px;
+
+    }
+    #card4 a{
+        padding: 4px 10px;
+        font-size: 14px;
+        
+    }
+    .body_container{
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        grid-template-rows: 30px 1fr ;
+        grid-template-areas: 
+        "left header"
+        "left right";
+    }
+    .top-header{
+        height: 30px;   
+        padding: 0px 15px 28px 15px; 
+    }
+     #card4{
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+
+    }
+
+
+    
+}
+@media (min-width:1500px){
+    #card4 a{
+        font-size: 12px;
+        padding: 8px 10px;    
+    }
+    .right{  
+        grid-template-rows: 120px 60px 1fr;
+        grid-template-areas: 
+        "card1 card2 card3"
+        "card4 card4 card4"
+        "card5 card5 card5";
+    }
+
+
+}
+
+

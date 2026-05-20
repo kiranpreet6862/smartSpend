@@ -1,5 +1,6 @@
 function togglemenu() {
     document.querySelector(".body_container").classList.toggle("active");
+    
 }
 
 function darkmode(){

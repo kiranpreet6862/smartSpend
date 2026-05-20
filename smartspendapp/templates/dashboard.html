@@ -57,15 +57,15 @@
                         </li>
                         <li class="logout-item" onclick="document.getElementById('logout-form').submit()">
                             <span class="material-symbols-outlined">arrow_back</span>
-                            <p class="log_out">Log out</p>
+                            <p class = "logout"><a href="{% url 'logout' %}">Log out </a></p>
                         </li>
                         <li class="profile">
                             <div class="profile_logo">
                                 <span class="material-symbols-outlined">account_circle</span>
                             </div>
                             <div class="profile_text">
-                                <p>Simranjeet</p>
-                                <span>simran@gmail.com</span>
+                                <p>{{request.user.username}}</p>
+                                <span>{{request.user.email}}</span>
                             </div>
                         </li>
                     </ul>
@@ -95,7 +95,14 @@
                     <div class="card" id="card1">
                         <p>TOTAL INCOME <span class="material-symbols-outlined">north_east</span></p>
                         <h4>₹ {{total_income | intcomma}}</h4>
-                        <p>+12% from last month</p>
+                        <p>
+                            {% if income_change > 0 %}
+                                +{{ income_change }}%
+                            {% else %}
+                                {{ income_change }}
+                            {% endif %}
+                            from last month
+                        </p>
                     </div>
                     <div class="card" id="card2">
                         <p>TOTAL EXPENSES <span class="material-symbols-outlined">south_east</span></p>
@@ -141,7 +148,7 @@
                                 </div>
 
                                 <div class="progress_name">
-                                    <p>Budget Usage<span>{{ budget_score | floatformat:0 }}%</span> </p>
+                                    <p>Budget Health<span>{{ budget_score | floatformat:0 }}%</span> </p>
                             
                                 </div>
                                 <div class="progress">
@@ -230,7 +237,7 @@
         const healthScore = {{ health_score | floatformat:0 }};
 
         document.addEventListener("DOMContentLoaded", function () {
-            const savingsRate = localStorage.getItem("savingsRate") || 20;
+        const savingsRate = localStorage.getItem("savingsRate") || 20;
         const projectedSavings = localStorage.getItem("projectedSavings");
     
         const totalIncome = Number("{{ total_income }}");

@@ -1,7 +1,10 @@
+*{
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    padding: 0;
-    
+    padding: 0;   
 }
 .body_container{
     display: grid;
@@ -14,7 +17,7 @@ body {
 .top-header{
     grid-area: header;
     background: white;
-    height: 30px;
+    height: 30px;   
     display: flex; 
     justify-content: flex-end;
     align-items: center;
@@ -146,7 +149,7 @@ li p a{
     border-right: 1px solid #eee;
 }
 .main{  
-    height: calc(100vh - 60px);
+    min-height: calc(100vh - 60px);
     overflow-y: auto;
     padding: 20px 40px;
     background: #F5F7FA;
@@ -391,8 +394,6 @@ li p a{
     font-weight: bold;
     margin-left: 10px;
     margin-bottom: 0;
-    
-
 }
 #donut_title span{
     font-size: 14px;
@@ -443,8 +444,6 @@ li p a{
     cursor: pointer;
 }
 
-/* ===== Sidebar Toggle ===== */
-
 .body_container.active {
     grid-template-columns: 0px 1fr;
 }
@@ -487,8 +486,6 @@ li p a{
     color: #F8FAFC;
 }
 
-/* Main Layout */
-
 .dark .main{
     background: #020817;
 }
@@ -503,15 +500,11 @@ li p a{
     border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-/* Cards */
-
 .dark .card{
     background: #081028;
     border: 1px solid rgba(255,255,255,0.05);
     box-shadow: 0 8px 30px rgba(0,0,0,0.35);
 }
-
-/* Typography */
 
 .dark h3,
 .dark h4,
@@ -521,7 +514,6 @@ li p a{
     color: #E2E8F0 !important;
 }
 
-/* Sidebar */
 
 .dark li p,
 .dark li span{
@@ -533,8 +525,6 @@ li p a{
     border-radius: 10px;
 }
 
-/* Active Nav */
-
 .dark .active-nav{
     background: rgba(16,185,129,0.15);
     border-radius: 10px;
@@ -545,14 +535,11 @@ li p a{
     color: #34D399 !important;
 }
 
-/* Progress Bars */
 
 .dark .progress,
 .dark .item .bar{
     background: rgba(255,255,255,0.08);
 }
-
-/* Colored Cards */
 
 .dark #card1{
     background: linear-gradient(
@@ -585,16 +572,11 @@ li p a{
         rgba(126,34,206,0.08)
     );
 }
-
-/* Text Shades */
-
 .dark .navigation > p,
 .dark #card6 > span,
 .dark #chart1 span{
     color: #64748B !important;
 }
-
-/* Scrollbar */
 
 .dark ::-webkit-scrollbar{
     width: 8px;
@@ -609,13 +591,10 @@ li p a{
     border-radius: 10px;
 }
 
-/* Hover Effects */
-
 .dark .card:hover{
     transform: translateY(-2px);
     transition: 0.3s ease;
 }
-/* Profile */
 
 .dark .profile{
     background: rgba(255,255,255,0.03);
@@ -645,7 +624,155 @@ li{
     background: rgba(255,255,255,0.08);
     color: white !important;
 }
-@media (min-width: 375px) {
 
 
- }  
+@media  (min-width: 376px) {
+
+    html,body{
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    .body_container{
+        display: block;
+    }
+
+    .left_container{
+        width: 0;
+    }
+
+    .right_container{
+        width: 100%;
+    }
+
+    .sidebar{
+        max-width: 220px;
+        z-index: 2000;
+    }
+    .settings{
+        margin-top: 130%;
+    }
+
+    .main{
+        width: 100%;
+        padding: 20px 18px;
+        overflow-x: hidden;
+    }
+
+    .cards{
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas:
+        "card1"
+        "card2"
+        "card3"
+        "card4"
+        "card5"
+        "card6"
+        "card7";
+
+    }
+
+    #card5,
+    #card6,
+    #card7{
+        width: auto;
+    }
+
+    #card7{
+        padding: 10px;
+    }
+
+
+    .card6_container,
+    .card7_container{
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .progress,
+    .item .bar{
+        width: 100%;
+    }
+
+    #chart2{
+        width: 170px;
+        margin: auto;
+    }
+
+    .top-header{
+        width: 100%;
+        height: 60px;
+        padding: 10px 15px;
+    }
+
+    
+}
+
+@media (min-width: 768px){
+    .body_container{
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        grid-template-rows: 30px 1fr ;
+        grid-template-areas:    
+        "left header"
+        "left right";
+        
+    }
+    .top-header{
+        height: 30px;   
+        padding: 0px 15px 28px 15px; 
+    }
+
+    .card6_container{
+        display: flex;   
+        gap: 2% !important;
+    
+    }
+    .cards{
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas:
+        "card1 card2"
+        "card3 card4"
+        "card5 card5"
+        "card6 card6"
+        "card7 card7"
+
+    }
+    .card7_container{
+        margin-top: 10px;
+    }
+    
+
+}
+@media (min-width: 1024px){
+    .cards{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 130px 280px 240px ;
+        grid-template-areas:
+        "card1 card2 card3 card4"
+        "card5 card5  card6 card6"
+        "card7 card7 card7 card7"
+
+    }    
+    .left_container{
+        width: 200px !important;
+    }
+    
+    .card7_container{
+        flex-direction: row;
+        gap: 20px;
+    }
+    .card6_container{
+        flex-direction: row;
+        justify-content: space-around;
+
+    }
+    .item .bar,.progress{
+        width: 200px;
+    }
+
+    
+
+}

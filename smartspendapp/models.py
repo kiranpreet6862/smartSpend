@@ -29,6 +29,7 @@ class Budget(models.Model):
     user=models.OneToOneField(User, on_delete=models.CASCADE)
     amount=models.IntegerField(default=70000)
     savings_rate = models.FloatField(default=20)
+    saving_goal = models.FloatField(default=50000)
     
     def __str__(self):
         return f"{self.user.username} - {self.amount}"

@@ -102,10 +102,19 @@ itemCost.addEventListener("input", function () {
 
 });
 
-const saving_goal = document.getElementById("edit_goal");
-const editForm = document.getElementById("edit_goal2");
+const editGoal = document.getElementById("edit_goal");
+const cancelBtn = document.querySelector(".cancel_btn");
+const goalDisplay = document.getElementById("card8");
+const goalForm = document.getElementById("card8_edit");
 
-saving_goal.addEventListener("click", function() {
+editGoal.addEventListener("click", function() {
+    goalDisplay.style.display = "none";
+    goalForm.style.display = "block";  
+});
 
-    
+
+
+cancelBtn.addEventListener("click", function() {
+    goalDisplay.style.display = "block";
+    goalForm.style.display = "none";  
 });
