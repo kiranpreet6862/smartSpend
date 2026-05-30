@@ -163,7 +163,7 @@ form input {
     margin: 18%;
     gap: 5px;
 }
-.right-container h2{
+.right-container h1{
     margin: 0;
     padding: 0;
     text-align: left;
@@ -247,20 +247,30 @@ form input {
 #buttons button {
     transition: all 0.3s ease;
 }
+#mobile_view{
+    display: none !important;
+    margin: 0;
+}
 
 @media (min-width:320px){
+    #mobile_view{
+        display: block !important;
+    }
     body{
         grid-template-columns: 1fr;
     }
     .left-container{
         display: none;
     }
+    .right-container {
+        margin-top: 165px;
+    }
     .right-container h1{
-        font-size: 25px;
-        margin-top: 40px;
+        font-size: 20px;
+        margin-top: 10px;
     }
     .right-container > p{
-        font-size: 18px !important;
+        font-size: 15px !important;
     }
     .sign-in-form > p, .sign-up-form > p{
         font-size: 15px !important;
@@ -269,7 +279,7 @@ form input {
         padding: 4px 10px;
     }
     form label{
-        font-size: 18px;
+        font-size: 14px;
     }
     form input{
         height: 40px;
@@ -278,11 +288,17 @@ form input {
 
 }
 @media (min-width: 768px) { 
+    #mobile_view{
+        display: none !important;
+    }
     body{
         grid-template-columns:1fr 1fr;
     }
     .left-container{
         display: block;
+    }
+    .right-container {
+        margin-top: 170px;
     }
     .logo{
         font-size: 25px;

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
     <title>Sign In/Out</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="stylesheet" href="{% static 'css/sign_in.css' %}">
@@ -31,6 +32,10 @@
         </div> 
     </div> 
     <div class="right-container">
+        <div class="logo" id="mobile_view">
+                <span class="material-symbols-outlined">trending_up</span>
+                SmartSpend
+        </div>
         <h1>Welcome Back!</h1>
         <p>Sign in to access your financial dashboard</p>
         <form class="sign-in-form" method="post" action="{% url 'auth' %}" >
